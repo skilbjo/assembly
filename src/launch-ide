@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+java -jar jar/mars.jar
+
