@@ -1,5 +1,5 @@
 #
-# Test binary_convert with some examples
+# Test trinary_convert with some examples
 #
 # s0 - num of tests left to run
 # s1 - address of input word
@@ -7,8 +7,8 @@
 # s3 - char byte
 # s4 - output word
 #
-# binary_convert must:
-# - be named binary_convert and declared as global
+# trinary_convert must:
+# - be named trinary_convert and declared as global
 # - read input address of string from a0
 # - follow the convention of using the t0-9 registers for temporary storage
 # - (if it uses s0-7 then it is responsible for pushing existing values to the stack then popping them back off before returning)
@@ -17,10 +17,10 @@
 .data
 
 # number of test cases
-n: .word 9
+n: .word 6
 # input values (null terminated) & expected output values (word sized ints)
-ins:  .asciiz "0", "1", "10", "11", "100", "1001", "11010", "10001101000", "000011111"
-outs: .word     0,   1,   2,     3,    4,       9,      26,          1128,          31
+ins:  .asciiz "0", "1", "10", "102101", "22222", "10000"
+outs: .word     0,   1,    3,      307,    242,       81
 
 failmsg: .asciiz "failed for test input: "
 okmsg: .asciiz "all tests passed"
@@ -35,7 +35,7 @@ runner:
 
 run_test:
         move    $a0, $s1                # move address of input str to a0
-        jal     binary_convert          # call subroutine under test
+        jal     trinary_convert         # call subroutine under test
         move    $v1, $v0                # move return value in v0 to v1 because we need v0 for syscall
 
         lw      $s4, 0($s2)             # read expected output from memory
@@ -76,4 +76,4 @@ exit_fail:
         syscall
 
 # # Include your implementation here if you wish to run this from the MARS GUI.
-.include "impl.mips"
+# .include "impl.mips"
