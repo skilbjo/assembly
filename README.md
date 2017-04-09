@@ -7,6 +7,10 @@
 file can be `binary`, ie the name of the exercise.
 bash completion should fill in the details.
 
+## linky
+- [http://www.cburch.com/cs/330/reading/mips-ref.pdf](http://www.cburch.com/cs/330/reading/mips-ref.pdf)
+- [https://inst.eecs.berkeley.edu/~cs61c/resources/MIPS_Green_Sheet.pdf](https://inst.eecs.berkeley.edu/~cs61c/resources/MIPS_Green_Sheet.pdf)
+
 ## Instruction Set
 
 ### Arithmetic and Logical Instructions
