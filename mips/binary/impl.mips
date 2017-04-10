@@ -7,49 +7,26 @@
 # - (if it uses s0-7 then it is responsible for pushing existing values to the
 # stack then popping them back off before returning)
 # - write integer result to v0
+#
+# '101' should return 101
 
 .globl binary_convert
 
 binary_convert:
-        move $t0, $a0
+        move $t0, $a0           # $t0 now has address of string
+        li $v0, 0               # reset accumulator
 
 loop:
-        lb $t1, 0($t0)            # load first byte of input
-
-check:
-        beq $t1, 48, good
-        beq $t1, 49, good
-        beq $t1, $0, end
-
-good:
-        sll $t2, $t2, 1
-        beq $t1, 48, end
-        addiu $t2, $t2, 1
-
-end:
-        addiu $t0, $t0, 1
+        lb $t1, 0($t0)          # load first byte of input
+        beq $t1,$zero,exit
+        sll $v0, $v0, 1         # increase accumulator by 2^n
+        sub $t2, $t1, 48        # ascii 0 = binary 48. subtract into $t2
+        add $v0, $v0, $t2       # add $t2 to accumulator
+        addi $t0, $t0, 1        # increment pointer
         j loop
 
 exit:
-        move $v0, $t9
         jr $ra
-
-#binary_convert:
-        #addu    $v0, $zero, $zero
-        #addu    $t2, $zero, $s1
-
-#loop:
-        #lb      $t3, 0($t2)        # load first byte of input
-        #beq     $t3, $zero, end    # if reached null character end
-        #addi    $t2, $t2, 1        # increment input string pointer for next interation
-        #subi    $t3, $t3, 0x30     # subtract the ascii digit for '0'(0x30)
-                                   ## or '1'(0x31) from 0x30 so we can just add $t1 after shifting
-        #sll     $v0, $v0, 1
-        #addu    $v0, $v0, $t3
-        #j loop
-
-#end:
-       #jr $ra
 
 binary_convert_my_crappy_implementation:
         lw      $t0,0($a0)         # load data from a0 into t1
