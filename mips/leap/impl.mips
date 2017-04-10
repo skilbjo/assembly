@@ -10,18 +10,18 @@
 .globl is_leap_year
 
 is_leap_year:
-        addu    $v0, $zero, $zero
-        addu    $t2, $zero, $s1
+  li $v0, 0               # reset accumulator
 
-loop:
-        lb      $t3, 0($t2)        # load first byte of input
-        beq     $t3, $zero, end    # if reached null character end
-        addi    $t2, $t2, 1        # increment input string pointer for next interation
-        subi    $t3, $t3, 0x30     # subtract the ascii digit for '0'(0x30) or '1'(0x31) from 0x30 so we can just add $t1 after shifting
-        sll     $v0, $v0, 1
-        addu    $v0, $v0, $t3
-        j loop
+checks:
+  lb $t0, 0($a0)          # load first byte of input
+  rem $t1, $t0, 4         # divide by 4
+  bne $t1, $zero, exit
+  rem $t1, $t0, 400       # divide by 400
+  bne $t1, $zero, exit
+  rem $t1, $t0, 400       # unless divde by 100
+  bne $t1, $zero, exit
+  addi $v0, $zero, 1
+  j exit
 
-end:
-        jr $ra
-
+exit:
+  jr $ra
