@@ -9,36 +9,30 @@
 #
 # '1735263' should return '506547'
 # '10' should return 8
+# 8 in binary is 1000
+# 2^3 = 8, 2^2 = 4 , 2^1 = 2 , 2^0 = 0
 
 .globl octal_convert
 
 octal_convert:
-        move $t0, $a0           # $t0 now has address of string
-        li $v0, 0               # reset accumulator
+        move $t0, $a0       # $t0 now has address of string
+        li $v0, 0           # reset accumulator
 
-loop:
-        lb $t1, 0($t0)          # load first byte of input
+decode:
+        lb $t1, 0($t0)      # load first byte of input
         beq $t1,$zero,exit
-        sll $v0, $v0, 1         # increase accumulator by 2^n
-        sub $t2, $t1, 48        # ascii 0 = binary 48. subtract into $t2
-        add $v0, $v0, $t2       # add $t2 to accumulator
-        addi $t0, $t0, 1        # increment pointer
-        j loop
+        addi $t0, $t0, 1    # increment pointer
+        sub $t1, $t1, 48    # ascii 0 = binary 48. subtract into $t2
+        j accumulate
+decode_end:
+        j decode
 
-#decode:
-#        lb $t1, 0($t0)          # load first byte of input
-#        beq $t1,$zero,exit
-#        sub $t2, $t1, 48        # ascii 0 = binary 48. subtract into $t2
-#        j accumulate
-#        addi $t0, $t0, 1        # increment pointer
-#decode_end:
-#        j decode
-
-#accumulate:
-#        sll $v0, $v0, 1         # increase accumulator by 2^n
-        #mul $t2, $t2, 8
- #       add $v0, $v0, $t2       # add $t2 to accumulator
-#	j decode_end
+accumulate:
+        sll $v0, $v0, 3     # increase accumulator by 2^n
+        #addi $v0, $v0, 8
+        #mul $t1, $t1, 8
+        add $v0, $v0, $t1   # add $t1 to accumulator
+ j decode_end
 
 exit:
         jr $ra
