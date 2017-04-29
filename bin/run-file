@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+file=$1
+
+java -jar jar/mars.jar src/"$file"/runner.mips
