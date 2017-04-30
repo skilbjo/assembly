@@ -2,4 +2,4 @@
 
 file=$1
 
-exercism submit src/"$file"/impl.mips
+exercism submit src/mips/"$file"/impl.mips
