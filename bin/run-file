@@ -2,4 +2,4 @@
 
 file=$1
 
-java -jar jar/mars.jar src/"$file"/runner.mips
+java -jar jar/mars.jar src/mips/"$file"/runner.mips

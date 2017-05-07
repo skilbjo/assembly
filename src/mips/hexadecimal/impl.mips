@@ -1,0 +1,48 @@
+.text
+
+# hex_convert must:
+# - be named hex_convert and declared as global
+# - read input address of string from a0
+# - follow the convention of using the t0-9 registers for temporary storage
+# - (if it uses s0-7 then it is responsible for pushing existing values to the stack then popping them back off before returning)
+# - write integer result to v0
+#
+# '1735263' should return '506547'
+# '10' should return 16
+# 16 in binary is 10000
+# 2^4 = 16 , 2^3 = 8, 2^2 = 4 , 2^1 = 2 , 2^0 = 0
+
+.globl hex_convert
+
+hex_convert:
+        move $t0, $a0       # $t0 now has address of string
+        li $v0, 0           # reset accumulator
+
+decode:
+        lb $t1, 0($t0)      # load first byte of input
+        beq $t1,$zero,exit
+        addi $t0, $t0, 1    # increment pointer
+        sub $t1, $t1, 48    # ascii 0 = binary 48. subtract into $t2
+
+compare:
+        # 65 - 70 is ascii A,B,C,D,E,F
+        # 65-48 = 17
+        bgt $t1,16,letter
+        j accumulate
+decode_end:
+        j decode
+
+letter:
+        sub $t1,$t1,17
+        sll $v0, $v0, 4      #? A=1(10),B=2(11),C=3(12),etc
+        add $v0, $v0, $t1
+        addi $v0, $v0, 10
+        j decode_end
+
+accumulate:
+        sll $v0, $v0, 3     # increase accumulator by 2^n
+        add $v0, $v0, $t1   # add $t1 to accumulator
+        j decode_end
+
+exit:
+        jr $ra

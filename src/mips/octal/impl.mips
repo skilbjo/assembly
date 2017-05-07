@@ -34,3 +34,34 @@ accumulate:
 
 exit:
         jr $ra
+
+#octal_convert:
+        #move $t0, $a0       # $t0 now has address of string
+        #li $v0, 0           # reset accumulator
+
+#decode:
+        #lb $t1, 0($t0)      # load first byte of input
+        #beq $t1,$zero,exit
+        #addi $t0, $t0, 1    # increment pointer
+        #sub $t1, $t1, 48    # ascii 0 = binary 48. subtract into $t2
+        #j accumulate
+#decode_end:
+        #j decode
+
+#accumulate:
+        ##addi $t2, $zero, 0  # clear $t2
+        ##addi $t2, $zero,
+        #beq $v0, $zero, accumulate_end
+        #addi $v0, $v0, 8
+        ##mul $t1, $t1, 8
+#accumulate_end:
+        #add $v0, $v0, $t1   # add $t1 to accumulator
+        #j decode_end
+
+##accumulate:
+        ##sll $v0, $v0, 3     # increase accumulator by 2^n
+        ##add $v0, $v0, $t1   # add $t1 to accumulator
+        ##j decode_end
+
+#exit:
+        #jr $ra
