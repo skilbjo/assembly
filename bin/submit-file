@@ -2,4 +2,6 @@
 
 file=$1
 
+cd src/mips/
+
 exercism submit src/mips/"$file"/impl.mips

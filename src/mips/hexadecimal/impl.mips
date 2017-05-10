@@ -40,7 +40,7 @@ letter:
         j decode_end
 
 accumulate:
-        sll $v0, $v0, 3     # increase accumulator by 2^n
+        sll $v0, $v0, 4     # increase accumulator by 2^n
         add $v0, $v0, $t1   # add $t1 to accumulator
         j decode_end
 
